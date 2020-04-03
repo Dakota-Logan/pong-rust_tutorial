@@ -1,0 +1,5 @@
+(
+	//Sets the default window dimension to 500x500
+	title: "Pong!",
+	dimensions: Some((500, 500)),
+)

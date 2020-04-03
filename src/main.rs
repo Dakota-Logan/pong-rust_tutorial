@@ -17,5 +17,10 @@ fn main() -> amethyst::Result<()> {
 	//logs errors, warnings, and debug messages
 	amethyst::start_logger(Default::default());
 	
+	let app_root = application_root_dir()?;
+	let display_config_path = app_root.join("config").join("display.ron");
+	
+	
+	
 	Ok(())
 }
