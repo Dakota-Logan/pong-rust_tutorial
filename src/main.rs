@@ -18,10 +18,23 @@ fn main() -> amethyst::Result<()> {
 	amethyst::start_logger(Default::default());
 	
 	let app_root = application_root_dir()?;
+	
 	let display_config_path = app_root.join("config").join("display.ron");
 	
 	//Creating a new instance of GameDataBuilder, a central repository of all the game logic that runs periodically during the game runtime.
-	let game_data = GameDataBuilder::default();
+	let game_data = GameDataBuilder::default()
+		.with_bundle(
+			RenderingBundle::<DefaultBackend>::new()
+				//RenderingBundle doesn't do much on it's own, it relies on it's own plugin system for you to tell it what and how to render.
+				//Use .with_plugin to register a plugin on the bundle.
+				//The RenderToWindow plugin provides all the scaffolding for opening a window and drawing on it.
+				.with_plugin(
+					RenderToWindow::from_config_path(display_config_path)?
+						                                 //Colors of the blank window. (RGBA format)
+						                                 .with_clear([0, 0, 0, 1]),
+					)
+				.with_plugin(RenderFlat2D::default()),
+		)?;
 	
 	//
 	let assets_dir = app_root.join("assets");
